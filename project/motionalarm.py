@@ -1,25 +1,40 @@
 import sys
+import os.path
 import traceback
+import logging
+
 import RPi.GPIO as GPIO
 from pygame import mixer
 import time
 import picamera
-import led
 
-motionpin=18
+import led
+from email_alert import send_email
+import config
+
+MOTIONPIN=18
+MYDIR = os.path.dirname(os.path.realpath(__file__))
+
+
+def initialize_logging():
+    logging.basicConfig(filename=os.path.join("/home/pi/irp.log"),
+            level=logging.DEBUG,
+            format="%(asctime)s:%(levelname)s:%(message)s"
+            )
 
 def take_picture():
-    with open('image.jpg', 'wb') as image_file:
+    with open(os.path.join(MYDIR, 'image.jpg'), 'wb') as image_file:
         with picamera.PiCamera() as camera:
             camera.capture(image_file)
 
 
 def initialize():
+    config.initialize()
     mixer.init()
-    mixer.music.load("/home/pi/research/motionalarm/intruder2.mp3")
+    mixer.music.load(os.path.join(MYDIR, "intruder2.mp3"))
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(motionpin, GPIO.IN)
+    GPIO.setup(MOTIONPIN, GPIO.IN)
     led.initialize()
     led.power_led(True)
 
@@ -33,17 +48,25 @@ def motion_detected():
     led.motion_led(True)
     mixer.music.play()
     take_picture()
+    send_email(config.get_value('alert_destination'),
+               'Intruder Alert',
+               'Motion alarm triggered',
+               os.path.join(MYDIR, 'image.jpg'))
 
 def uninitialize():
-    GPIO.cleanup()
-    mixer.quit()
-    led.power_led(False)
+    try:
+        GPIO.cleanup()
+        mixer.quit()
+        led.power_led(False)
+    except:
+        pass #swallow all exceptions on uninitialize
 
 
 def main_loop():
     oldvalue=-1
     while True:
-        i=GPIO.input(motionpin)
+        i=GPIO.input(MOTIONPIN)
+        # only react to changes
         if i != oldvalue:
             if i==0:
                 motion_stopped()
@@ -54,8 +77,10 @@ def main_loop():
 
 
 try:
+    initialize_logging()
     initialize()
     main_loop()
-except: 
-    uninitialize()
+except:
+    logging.exception("Got exception")
     traceback.print_exc(file=sys.stdout)
+    uninitialize()
