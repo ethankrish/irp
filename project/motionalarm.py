@@ -11,6 +11,7 @@ import picamera
 import led
 from email_alert import send_email
 import config
+from datafile import recordnow
 
 MOTIONPIN=18
 MYDIR = os.path.dirname(os.path.realpath(__file__))
@@ -45,10 +46,12 @@ def motion_stopped():
 
 def motion_detected():
     print "intruder!"
+    recordnow()
     led.motion_led(True)
     mixer.music.play()
     take_picture()
-    send_email(config.get_value('alert_destination'),
+    if config.get_value('send_email'):
+        send_email(config.get_value('alert_destination'),
                'Intruder Alert',
                'Motion alarm triggered',
                os.path.join(MYDIR, 'image.jpg'))

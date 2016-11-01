@@ -5,7 +5,7 @@ import time
 
 mixer.init()
 mixer.music.load('/home/pi/research/alarm/intruder1.mp3')
-mixer.music.play(loop=10)
+mixer.music.play()
 
 time.sleep(10)
 
