@@ -1,5 +1,13 @@
+#!/usr/bin/env python
+
 import smtplib
 import json
+
+"""subject_email.py sends an email with a simple message but also has a subject"""
+
+__author__ = "Ethan Ramchandani"
+
+
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 

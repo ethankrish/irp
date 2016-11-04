@@ -1,5 +1,13 @@
+#!/usr/bin/env python
+
 import smtplib
 import json
+
+
+"""image_email.py sends a simple email with an image attachment"""
+
+__author__ = "Ethan Ramchandani"
+
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from email.MIMEBase import MIMEBase

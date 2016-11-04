@@ -1,5 +1,12 @@
+#!/usr/bin/env python
+
 import smtplib
 import json
+
+"""simpleemail.py sends an email with a simple image"""
+
+__author__ = "Ethan Ramchandani"
+
 
 with open("/home/pi/.irpconfig") as config_file:
     config = json.load(config_file)

@@ -1,6 +1,11 @@
+#!/usr/bin/env python
+
+"""led.py: Turns on an and off two LEDs"""
+
+__author__ = "Ethan Ramchandani"
+
 import RPi.GPIO as GPIO
 import time
-
 
 waittime = 0.3
 portnum = 23

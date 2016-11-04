@@ -1,5 +1,12 @@
+#!/usr/bin/env python
+
 import RPi.GPIO as GPIO
 import time
+
+
+"""motion2.py tells you when motion is detected and when it is clear"""
+
+__author__ = "Ethan Ramchandani"
 
 motionpin=18
 

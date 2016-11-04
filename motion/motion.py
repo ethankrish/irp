@@ -1,5 +1,4 @@
 from gpiozero import MotionSensor
-import time
 
 pir = MotionSensor(18)
 while True:

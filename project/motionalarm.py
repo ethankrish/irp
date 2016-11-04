@@ -13,15 +13,16 @@ from email_alert import send_email
 import config
 from datafile import recordnow
 
-MOTIONPIN=18
+MOTIONPIN = 18
 MYDIR = os.path.dirname(os.path.realpath(__file__))
 
 
 def initialize_logging():
     logging.basicConfig(filename=os.path.join("/home/pi/irp.log"),
-            level=logging.DEBUG,
-            format="%(asctime)s:%(levelname)s:%(message)s"
-            )
+                        level=logging.DEBUG,
+                        format="%(asctime)s:%(levelname)s:%(message)s"
+                        )
+
 
 def take_picture():
     with open(os.path.join(MYDIR, 'image.jpg'), 'wb') as image_file:
@@ -39,10 +40,12 @@ def initialize():
     led.initialize()
     led.power_led(True)
 
+
 def motion_stopped():
     print "clear"
     led.motion_led(False)
     mixer.music.stop()
+
 
 def motion_detected():
     print "intruder!"
@@ -52,9 +55,10 @@ def motion_detected():
     take_picture()
     if config.get_value('send_email'):
         send_email(config.get_value('alert_destination'),
-               'Intruder Alert',
-               'Motion alarm triggered',
-               os.path.join(MYDIR, 'image.jpg'))
+                   'Intruder Alert',
+                   'Motion alarm triggered',
+                   os.path.join(MYDIR, 'image.jpg'))
+
 
 def uninitialize():
     try:
@@ -62,19 +66,22 @@ def uninitialize():
         mixer.quit()
         led.power_led(False)
     except:
-        pass #swallow all exceptions on uninitialize
+        pass  # swallow all exceptions on uninitialize
 
 
 def main_loop():
-    oldvalue=-1
+    # Program runs this loop forever
+    oldvalue = -1
     while True:
-        i=GPIO.input(MOTIONPIN)
+        # check motion sensor
+        i = GPIO.input(MOTIONPIN)
         # only react to changes
         if i != oldvalue:
-            if i==0:
+            if i == 0:
                 motion_stopped()
             else:
                 motion_detected()
+        # make loop not run too fast or else battery drains
         time.sleep(0.1)
         oldvalue = i
 

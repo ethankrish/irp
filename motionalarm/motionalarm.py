@@ -1,7 +1,15 @@
+#!/usr/bin/env python
+
 import sys
 import RPi.GPIO as GPIO
 from pygame import mixer
 import time
+
+
+"""motionalarm.py plays a sound when motion is detected and stops when it is clear"""
+
+__author__ = "Ethan Ramchandani"
+
 
 motionpin=18
 

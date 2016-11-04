@@ -1,7 +1,10 @@
+#!/usr/bin/env python
+
 import time
 from datetime import datetime
 
-# write a function that opens 
+
+# write a function that opens
 # /home/pi/motiondata.txt
 # if it exists then it should write the 
 # current date and time to the end and close it

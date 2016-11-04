@@ -1,6 +1,13 @@
+#!/usr/bin/env python
+
 # found on stackoverflow
 
 import urllib2
+
+"""internetcheck.py checks for internet by trying to connect to google"""
+
+__author__ = "Ethan Ramchandani"
+
 
 def internet_on():
     try:

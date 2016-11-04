@@ -1,5 +1,14 @@
+#!/usr/bin/env python
+
 import logging
 import smtplib
+
+
+"""email_alert sends an email with an image attachment"""
+
+__author__ = "Ethan Ramchandani"
+
+
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from email.MIMEBase import MIMEBase
